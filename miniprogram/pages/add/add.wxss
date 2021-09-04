@@ -1,0 +1,62 @@
+input {
+  width: 590rpx;
+  height: 80rpx;
+  background: #E6F0FF;
+  border-radius: 32rpx;
+  line-height: 80rpx;
+  padding: 0 40rpx;
+}
+.adds {
+/* margin-bottom: 40rpx; */
+z-index: -1;
+display: flex;
+}
+
+.lis {
+width: 28%;
+margin-left: 20rpx;
+}
+
+.lis:first-child {
+width: 37%;
+margin-left: 0;
+}
+
+.myI {
+width: auto !important;
+}
+
+.plus {
+width: 200rpx;
+height: 55rpx;
+line-height: 55rpx;
+border-radius: 36rpx;
+background-color: #ffffff;
+color: rgba(101, 166, 255, 100);
+font-size: 14px;
+text-align: center;
+border: 1px solid rgba(101, 166, 255, 100);
+margin-top: 30rpx;
+margin-bottom: 120rpx;
+/* margin-left: 460rpx; */
+}
+
+.plus text {
+font-size: 20px;
+color: rgba(101, 166, 255, 100);
+font-weight: bold;
+line-height: 55rpx;
+}
+
+.yuans {
+width: 40rpx;
+height: 40rpx;
+border-radius: 50%;
+line-height: 40rpx;
+background-color: red;
+color: #ffffff;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+margin-top: 120rpx;
+}

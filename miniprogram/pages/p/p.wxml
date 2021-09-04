@@ -1,0 +1,147 @@
+<view class="page">
+  <!--课程信息表单-->
+  <view wx:for="{{CourseDetail}}" wx:key="Courses">
+    <!--标题-->
+    <view class="weui-form__tips-area">
+			<view class="weui-form__tips">
+        课程信息
+			</view>
+		</view>
+    <!--课程名称-->
+    <view class="weui-cell weui-cell_active">
+		  <view class="weui-cell__hd"><label class="weui-label">课程名称</label></view>
+			  <view class="weui-cell__bd weui-flex" wx:if="{{Courses[0]}}">
+				  <input
+            class="weui-input"  
+            type="text" 
+            placeholder="{{Courses[0]}}" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputCourseName"
+          />
+		    </view>
+        <view class="weui-cell__bd weui-flex" wx:else>
+          <input
+            class="weui-input"  
+            type="text" 
+            placeholder="请输入课程名称" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputCourseName"
+          />
+        </view>
+	  </view>
+    <!--所在教室-->
+    <view class="weui-cell weui-cell_active">
+		  <view class="weui-cell__hd"><label class="weui-label">教室</label></view>
+			  <view class="weui-cell__bd weui-flex" wx:if="{{Courses[1]}}">
+				  <input 
+            class="weui-input" 
+            type="text" 
+            placeholder="{{Courses[1]}}" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputClassRoom"
+          />
+		    </view>
+        <view class="weui-cell__bd weui-flex" wx:else>
+				  <input 
+            class="weui-input" 
+            type="text" 
+            placeholder="请输入教室" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputClassRoom"
+          />
+		    </view>
+	  </view>
+    <!--授课老师-->
+    <view class="weui-cell weui-cell_active">
+		  <view class="weui-cell__hd"><label class="weui-label">老师姓名</label></view>
+			  <view class="weui-cell__bd weui-flex" wx:if="{{Courses[2]}}">
+				  <input 
+            class="weui-input" 
+            type="text" 
+            placeholder="{{Courses[2]}}" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputTeacher"
+          />
+		    </view>
+        <view class="weui-cell__bd weui-flex" wx:else>
+				  <input 
+            class="weui-input" 
+            type="text" 
+            placeholder="请输入老师姓名" 
+            placeholder-class="weui-input__placeholder"
+            bindblur="InputTeacher"
+          />
+		    </view>
+	  </view>
+    <!--周数，滑轮选择-->
+    <view class="weui-cell__hd">
+      <picker mode="multiSelector" bindchange="WeekbindMultiPickerChange" 
+      value="{{Courses}}" range="{{WeekmultiArray}}" wx:if="{{Courses}}" >
+        <view class='weui-cell weui-cell_active'>
+          <view class="picker" data-idx='{{index}}' >
+              周数：{{WeekmultiArray[0][Courses[3][0]]}}，{{WeekmultiArray[1][Courses[3][1]]}}
+          </view>
+        </view>
+      </picker>
+      <picker mode="multiSelector" bindchange="WeekbindMultiPickerChange" 
+      value="{{WeekmultiIndex}}" range="{{WeekmultiArray}}" wx:else>
+        <view class='weui-cell weui-cell_active'>
+          <view class="picker">
+              周数：{{WeekmultiArray[0][WeekmultiIndex[0]]}}，{{WeekmultiArray[1][WeekmultiIndex[1]]}}
+          </view>
+        </view>
+      </picker>
+    </view>
+    <!--节数，滑轮选择-->
+    <view class="weui-cell__hd">
+      <picker mode="multiSelector" bindchange="SectionbindMultiPickerChange" 
+      value="{{Courses[4]}}" range="{{SectionmultiArray}}" wx:if="{{Courses[4]}}">
+        <view class='weui-cell weui-cell_active'>
+          <view class="picker">
+                节数：{{SectionmultiArray[0][Courses[4][0]]}}，{{SectionmultiArray[1][Courses[4][1]]}}，{{SectionmultiArray[2][Courses[4][2]]}}
+          </view>
+        </view>
+      </picker>
+      <picker mode="multiSelector" bindchange="SectionbindMultiPickerChange" 
+      value="{{SectionmultiIndex}}" range="{{SectionmultiArray}}" wx:else>
+        <view class='weui-cell weui-cell_active'>
+          <view class="picker">
+                节数：{{SectionmultiArray[0][SectionmultiIndex[0]]}}，{{SectionmultiArray[1][SectionmultiIndex[1]]}}，{{SectionmultiArray[2][SectionmultiIndex[2]]}}
+          </view>
+        </view>
+      </picker>
+    </view>
+    <!--上课时间，滑轮选择-->
+    <view class="weui-cell__hd">
+      <picker mode="time" value="{{Courses[5]}}" start="00:00" end="23:59" bindchange="ClassTimebindTimeChange" wx:if="{{Courses[5]}}">
+        <view class="weui-cell weui-cell_active">
+          <view class="picker" >
+              上课时间: {{Courses[5]}}
+          </view>
+        </view>
+      </picker>
+      <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="ClassTimebindTimeChange" wx:else>
+        <view class="weui-cell weui-cell_active">
+          <view class="picker" >
+              上课时间: {{time}}
+          </view>
+        </view>
+      </picker>
+    </view>
+    <!--结尾分割-->
+    <view class="weui-cell"></view>
+  </view>
+  
+  <!--增加删除课程按钮-->
+	<view class="page__bd page__bd_spacing">
+		<view class="weui-flex">
+			<view class="weui-flex__item">
+      <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="AddCourseNums" data-index="{{index}}">保存</a></view>
+        <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="AddCourse" data-index="{{index}}">添加课程</a></view>
+        <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="DeleteCourse" data-index="{{index}}">删除课程</a></view>
+        <view class="placeholder"><a class="weui-btn weui-btn_primary">提交</a></view>
+      </view>
+    </view>
+  </view>
+  <view class="weui-form__tips-area"></view>
+</view>

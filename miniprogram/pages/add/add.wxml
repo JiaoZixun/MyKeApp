@@ -1,0 +1,17 @@
+ <view class="adds">
+    <view class="adds" wx:for="{{addGoods}}" wx:key="idnex">
+      <view class="yuans" bindtap="deletePrice" data-index="{{index}}">-</view>
+      <view class="lis">
+        <view class="title">货品名称</view>
+        <input type="text" class="myI" name='' value='{{names[index+1]}}'  data-index='{{index}}' bindblur="bindinput" placeholder="请输入" />
+      </view>
+      <view class="lis">
+        <view class="title">件数</view>
+        <input type="number" class="myI" name='' value='{{jianshus[index+1]}}' data-index='{{index}}' bindblur="bindinput1" placeholder="请输入" />
+      </view>
+      <view class="lis">
+        <view class="title">重量(kg)</view>
+        <input type="digit" class="myI" name='' value='{{zhongliangs[index+1]}}' data-index='{{index}}' bindblur="bindinput2" placeholder="请输入" />
+      </view>
+    </view>
+</view>
