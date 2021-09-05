@@ -1,110 +1,80 @@
+//获取应用实例
+const app = getApp()
+
 Page({
-  
-  data:{
-    addGoods: [{}],
-    name: '',
-    jianshu: '',
-    zhongliang: '',
-    goodsName: '',
-    goodsJianshu: '',
-    goodsZhongliang: '',
-    names: [],//货品名称数组
-    jianshus: [],//件数数组
-    zhongliangs: [],//重量数组
-  },
-// 添加
-/* 
- addGoodsSub: util.throttle(function () {
-   var old = this.data.addGoods;
-   old.push(1);//这里不管push什么，只要数组长度增加1就行
-   this.setData({
-     addGoods: old
-   })
- }),
+    data: {
+        //判断小程序的API，回调，参数，组件等是否在当前版本可用。
+        canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        isHide: false
+    },
 
- // 删除
- deletePrice: util.throttle(function (e) {
-   that = this
-   var oldArr = this.data.addGoods;//循环内容
-   var nowIdx = e.currentTarget.dataset.index;//当前索引
-   //所有的input值
-   var names = that.data.names;
-   var jianshus = that.data.jianshus;
-   var zhongliangs = that.data.zhongliangs;
-   oldArr.splice(nowIdx, 1);    //删除当前索引的内容，这样就能删除view了
-   //view删除了对应的input值也要删掉
-   names.splice(nowIdx + 1, 1);
-   jianshus.splice(nowIdx + 1, 1);
-   zhongliangs.splice(nowIdx + 1, 1);
-   if (oldArr.length < 1) {
-     oldArr = []  //如果循环内容长度为0即删完了 ,初始化
-   }
-   this.setData({
-     addGoods: oldArr,
-     names,
-     jianshus,
-     zhongliangs
-   })
- }),
+    onLoad: function() {
+        var that = this;
+        // 查看是否授权
+        wx.getSetting({
+            success: function(res) {
+                if (res.authSetting['scope.userInfo']) {
+                    wx.getUserInfo({
+                        success: function(res) {
+                            // 用户已经授权过,不需要显示授权页面,所以不需要改变 isHide 的值
+                            // 根据自己的需求有其他操作再补充
+                            // 我这里实现的是在用户授权成功后，调用微信的 wx.login 接口，从而获取code
+                            wx.login({
+                                success: res => {
+                                    // 获取到用户的 code 之后：res.code
+                                    console.log("用户的code:" + res.code);
+                                    // 可以传给后台，再经过解析获取用户的 openid
+                                    // 或者可以直接使用微信的提供的接口直接获取 openid ，方法如下：
+                                    wx.request({
+                                    //     // 自行补上自己的 APPID 和 SECRET
+                                    //    url: 'https://api.weixin.qq.com/sns/jscode2session?appid=自己的AppID&secret=自己的secret&js_code=' + res.code + '&grant_type=authorization_code'
+                                         url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wx617a7712cd31a5d8&secret=b35b9d20883df000763defd92cec21eb&js_code=' + res.code + '&grant_type=authorization_code',
+                                         success: res => {
+                                    //         // 获取到用户的 openid
+                                            console.log("用户的openid:" + res.data.openid);
+                                         }
+                                     });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    // 用户没有授权
+                    // 改变 isHide 的值，显示授权页面
+                    that.setData({
+                        isHide: true
+                    });
+                }
+            }
+        });
+    },
 
- // 添加货品中 input失去焦点获取数据
- bindinput(e) {
-   var nowIdx = e.currentTarget.dataset.index;//获取当前索引
-   var val = e.detail.value;//获取输入的值
-   var names = this.data.names;
-   names[nowIdx + 1] = val;//修改对应索引值的内容
-   this.setData({
-     names: names
-   })
- },
- bindinput1(e) {
-   var nowIdx = e.currentTarget.dataset.index;
-   var val = e.detail.value;
-   var jianshus = this.data.jianshus;
-   jianshus[nowIdx + 1] = val;
-   this.setData({
-     jianshus
-   })
+    bindGetUserInfo: function(e) {
+        if (e.detail.userInfo) {
+            //用户按了允许授权按钮
+            var that = this;
+            // 获取到用户的信息了，打印到控制台上看下
+            console.log("用户的信息如下：");
+            console.log(e.detail.userInfo);
+            //授权成功后,通过改变 isHide 的值，让实现页面显示出来，把授权页面隐藏起来
+            that.setData({
+                isHide: false
+            });
 
- },
- bindinput2(e) {
-   var nowIdx = e.currentTarget.dataset.index;
-   var val = e.detail.value;
-   var zhongliangs = this.data.zhongliangs;
-   zhongliangs[nowIdx + 1] = val;
-   this.setData({
-     zhongliangs
-   })
- },
-
- //先把固定货品添加数组中
- inputGoods(e) {
-   var goodsName = e.detail.value;
-   var names = this.data.names.concat(goodsName); //先把固定货品添加数组中
-   this.setData({
-     goodsName,
-     names
-   })
- },
-
- inputGoods1(e) {
-   var jianshus = this.data.jianshus;
-   var goodsJianshu = e.detail.value;
-   jianshus = jianshus.concat(goodsJianshu);
-   this.setData({
-     goodsJianshu,
-     jianshus
-   })
- },
-
- inputGoods2(e) {
-   var zhongliangs = this.data.zhongliangs;
-   var goodsZhongliang = e.detail.value;
-   zhongliangs = zhongliangs.concat(goodsZhongliang);
-   this.setData({
-     goodsZhongliang,
-     zhongliangs
-   })
- },
- */
-})    
+        } else {
+            //用户按了拒绝按钮
+            wx.showModal({
+                title: '警告',
+                content: '您点击了拒绝授权，将无法进入小程序，请授权之后再进入!!!',
+                showCancel: false,
+                confirmText: '返回授权',
+                success: function(res) {
+                    // 用户没有授权成功，不需要改变 isHide 的值
+                    if (res.confirm) {
+                        console.log('用户点击了“返回授权”');
+                    }
+                }
+            });
+        }
+    }
+})

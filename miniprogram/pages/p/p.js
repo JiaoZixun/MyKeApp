@@ -3,7 +3,7 @@ Page({
   data:{
     /**存储数据 */
     CourseDetail:[],
-    CourseNums: [],
+    CourseNums: 0,
     coursename:'',
     classroom:'',
     teacher:'',
@@ -54,7 +54,9 @@ Page({
   /**添加课程信息 */
   AddCourse() {
     var PreCourses = this.data.CourseDetail;
-    var that = this
+    var that = this;
+    var CourseNums = this.data.CourseNums
+    CourseNums += 1
     if(this.data.saveflag==false){
       wx.showModal({
         title: '提示',
@@ -78,7 +80,8 @@ Page({
       week:[0,0],
       section:[0,0,0],
       classtime:'',
-      saveflag:false
+      saveflag:false,
+      CourseNums,
     })
   },
   
@@ -87,6 +90,8 @@ Page({
     var that = this
     var Course  = this.data.CourseDetail;//课程细节表
     var nowIdx = this.data.CourseDetail.length//当前view的长度
+    var CourseNums = this.data.CourseNums
+    CourseNums -= 1
     if(nowIdx<1){
       wx.showModal({
         title: '提示',
@@ -107,7 +112,8 @@ Page({
     }
     this.setData({
       CourseDetail:Course,
-      saveflag:true
+      saveflag:true,
+      CourseNums
     })
     console.log(this.data.CourseDetail)
   },
@@ -142,20 +148,11 @@ Page({
     console.log(teacher)
   },
   /**保存周数 */
-  /**WeekbindMultiPickerColumnChange(e) {
-    var week = this.data.week
-    this.setData({
-      week:e.detail.value,
-      //WeekmultiIndex:this.data.week
-    })
-    console.log(week)
-    //console.log(WeekmultiIndex)
-  },*/
   WeekbindMultiPickerChange(e) {
     //var week = this.data.week
     this.setData({
       week:e.detail.value,
-      WeekmultiIndex:e.detail.value
+      //WeekmultiIndex:e.detail.value
     })
     console.log(this.data.week)
     console.log(this.data.WeekmultiIndex)
@@ -178,7 +175,10 @@ Page({
     })
     console.log(classtime)
   },
+  /**提交保存到数据库 */
+  submit_save() {
 
+  },
   /**
    * 页面的初始数据
    */

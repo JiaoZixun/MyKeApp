@@ -1,6 +1,6 @@
 <view class="page">
   <!--课程信息表单-->
-  <view wx:for="{{CourseDetail}}" wx:key="Courses">
+  <view wx:for="{{CourseDetail}}" wx:for-index="idx" wx:for-item="Courses">
     <!--标题-->
     <view class="weui-form__tips-area">
 			<view class="weui-form__tips">
@@ -76,9 +76,9 @@
     <!--周数，滑轮选择-->
     <view class="weui-cell__hd">
       <picker mode="multiSelector" bindchange="WeekbindMultiPickerChange" 
-      value="{{Courses}}" range="{{WeekmultiArray}}" wx:if="{{Courses}}" >
+      value="{{Courses[3]}}" range="{{WeekmultiArray}}" wx:if="{{Courses[3]}}" >
         <view class='weui-cell weui-cell_active'>
-          <view class="picker" data-idx='{{index}}' >
+          <view class="picker" >
               周数：{{WeekmultiArray[0][Courses[3][0]]}}，{{WeekmultiArray[1][Courses[3][1]]}}
           </view>
         </view>
@@ -136,10 +136,10 @@
 	<view class="page__bd page__bd_spacing">
 		<view class="weui-flex">
 			<view class="weui-flex__item">
-      <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="AddCourseNums" data-index="{{index}}">保存</a></view>
+        <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="AddCourseNums" data-index="{{index}}">保存</a></view>
         <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="AddCourse" data-index="{{index}}">添加课程</a></view>
         <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="DeleteCourse" data-index="{{index}}">删除课程</a></view>
-        <view class="placeholder"><a class="weui-btn weui-btn_primary">提交</a></view>
+        <view class="placeholder"><a class="weui-btn weui-btn_primary" bindtap="submit_save">提交</a></view>
       </view>
     </view>
   </view>
